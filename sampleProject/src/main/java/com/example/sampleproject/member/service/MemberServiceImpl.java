@@ -17,15 +17,16 @@ public class MemberServiceImpl implements MemberService {
     @Inject
     MemberDAOImpl memberDao;
 	
+    // 01. 회원 목록
 	@Override
 	public List<MemberVO> memberList() {
 		return memberDao.memberList();
 	}
-
+	
+	// 02. 회원 등록
 	@Override
 	public void insertMember(MemberVO vo) {
-		// TODO Auto-generated method stub
-
+		memberDao.insertMember(vo);
 	}
 
 	@Override
