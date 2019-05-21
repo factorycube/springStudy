@@ -5,7 +5,8 @@
 <configuration>
 
 	<typeAliases>
-		<!-- <typeAlias type="com.example.spring02.model.shop.dto.ProductDTO" alias="productDto"/> -->
+		<typeAlias type="com.example.sampleproject.model.member.dto.MemberVO" alias="memberVO"/>
+		<typeAlias type="com.example.sampleproject.model.board.dto.BoardVO" alias="boardVO"/>
 	</typeAliases>
 
 </configuration>
