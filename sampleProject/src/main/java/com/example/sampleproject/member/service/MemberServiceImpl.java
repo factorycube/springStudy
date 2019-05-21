@@ -28,12 +28,12 @@ public class MemberServiceImpl implements MemberService {
 	public void insertMember(MemberVO vo) {
 		memberDao.insertMember(vo);
 	}
-
-	@Override
-	public MemberVO viewMember() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+	// 03. 회원 정보 상세 조회 
+    @Override
+    public MemberVO viewMember(String userId) {
+        return memberDao.viewMember(userId);
+    }
 
 	@Override
 	public void deleteMember(String userId) {
