@@ -57,7 +57,10 @@
             <tr>
                 <td>회원정보 수정일자</td>
                 <td>
+                	<!-- 수정이 안되었을때 수정일자 안나오게 처리 -->
+                	<c:if test="${dto.userUpdatedate != null }">
                     <fmt:formatDate value="${dto.userUpdatedate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                    </c:if>
                 </td>
             </tr>
             <tr>
