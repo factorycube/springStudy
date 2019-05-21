@@ -67,4 +67,11 @@ public class MemberController {
         return "member/member_view";
     }
     
+    // 04. 회원 정보 수정 처리
+    @RequestMapping("member/update.do")
+    public String memberUpdate(@ModelAttribute MemberVO vo){
+        memberService.updateMember(vo);
+        return "redirect:/member/list.do";
+    }
+
 }

@@ -40,11 +40,10 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 
 	}
-
+	// 04. 회원 정보 수정 처리
 	@Override
 	public void updateMember(MemberVO vo) {
-		// TODO Auto-generated method stub
-
+		memberDao.updateMember(vo);
 	}
 
 }

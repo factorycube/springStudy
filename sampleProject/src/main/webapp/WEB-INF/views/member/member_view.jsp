@@ -5,6 +5,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>회원정보 상세 페이지</title>
 <%@ include file="../include/member_header.jsp" %>
+<script>
+    $(document).ready(function(){
+        $("#btnUpdate").click(function(){
+            document.form1.action = "${path}/member/update.do";
+            document.form1.submit();
+        });
+    });
+</script>
 </head>
 <body>
 <%@ include file="../include/member_menu.jsp" %>
@@ -24,6 +32,12 @@
                 <td>이름</td>
                 <td><input name="userName" value="${dto.userName}"></td>
             </tr>
+            <!-- 누락된 부분 -->
+            <tr>
+                <td>이메일주소</td>
+                <td><input name="userEmail" value="${dto.userEmail}"></td>
+            </tr>
+            <!-- 누락된 부분 -->
             <tr>
                 <td>회원가입일자</td>
                 <td>
