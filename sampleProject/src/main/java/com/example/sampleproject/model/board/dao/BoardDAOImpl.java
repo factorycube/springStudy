@@ -1,6 +1,8 @@
 package com.example.sampleproject.model.board.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -36,13 +38,26 @@ public class BoardDAOImpl implements BoardDAO {
 	}
 	// 05. 게시글 전체 목록
 	@Override
-	public List<BoardVO> listAll() {
-		return sqlSession.selectList("board.listAll");
+	public List<BoardVO> listAll(String searchOption, String keyword) {
+		// 검색옵션, 키워드 맵에 저장
+	    Map<String, String> map = new HashMap<String, String>();
+	    map.put("searchOption", searchOption);
+	    map.put("keyword", keyword);
+	    return sqlSession.selectList("board.listAll", map);
 	}
-	// 게시글 조회수 증가
+	// 06. 게시글 조회수 증가
 	@Override
 	public void increaseViewcnt(int bno) {
 		sqlSession.update("board.increaseViewcnt", bno);
+	}
+	// 07. 게시글 레코드 갯수
+	@Override
+	public int countArticle(String searchOption, String keyword) {
+		// 검색옵션, 키워드 맵에 저장
+	    Map<String, String> map = new HashMap<String, String>();
+	    map.put("searchOption", searchOption);
+	    map.put("keyword", keyword);
+	    return sqlSession.selectOne("board.countArticle", map);
 	}
 
 }

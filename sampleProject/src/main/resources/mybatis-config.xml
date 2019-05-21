@@ -6,7 +6,7 @@
 
 	<typeAliases>
 		<typeAlias type="com.example.sampleproject.model.member.dto.MemberVO" alias="memberVO"/>
-		<typeAlias type="com.example.sampleproject.model.board.dto.BoardVO" alias="boardVO"/>
+		<!-- <typeAlias type="com.example.sampleproject.model.board.dto.BoardVO" alias="boardVO"/> -->
 	</typeAliases>
 
 </configuration>

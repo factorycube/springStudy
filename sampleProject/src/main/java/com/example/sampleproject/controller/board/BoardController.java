@@ -1,6 +1,8 @@
 package com.example.sampleproject.controller.board;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
@@ -25,14 +27,28 @@ public class BoardController {
     
     // 01. 게시글 목록
     @RequestMapping("list.do")
-    public ModelAndView list() {
-        List<BoardVO> list = boardService.listAll();
-        // ModelAndView - 모델과 뷰
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("board/list"); // 뷰를 list.jsp로 설정
-        mav.addObject("list", list); // 데이터를 저장
-        return mav; // list.jsp로 List가 전달된다.
-    }
+    // @RequestParam(defaultValue="") ==> 기본값 할당
+    public ModelAndView list(@RequestParam(defaultValue="title") String searchOption,
+    						@RequestParam(defaultValue="") String keyword) {
+    	List<BoardVO> list = boardService.listAll(searchOption, keyword);
+    	// 레코드의 갯수
+    	int count = boardService.countArticle(searchOption, keyword);
+    	// ModelAndView - 모델과 뷰
+    	ModelAndView mav = new ModelAndView();
+    	/*mav.addObject("list", list); // 데이터를 저장
+		mav.addObject("count", count);
+		mav.addObject("searchOption", searchOption);
+		mav.addObject("keyword", keyword);*/
+    	// 데이터를 맵에 저장
+    	Map<String, Object> map = new HashMap<String, Object>();
+    	map.put("list", list); // list
+    	map.put("count", count); // 레코드의 갯수
+    	map.put("searchOption", searchOption); // 검색옵션
+    	map.put("keyword", keyword); // 검색키워드
+    	mav.addObject("map", map); // 맵에 저장된 데이터를 mav에 저장
+    	mav.setViewName("board/list"); // 뷰를 list.jsp로 설정
+    	return mav; // list.jsp로 List가 전달된다.
+	}
     
     // 02_01. 게시글 작성화면
     // @RequestMapping("board/write.do")

@@ -53,10 +53,10 @@ public class BoardServiceImpl implements BoardService {
 	public void delete(int bno) {
 		boardDao.delete(bno);
 	}
-	// 05. 게시글 전체 목록
+	// 05. 게시글 전체 목록 boardDAO.listAll메서드 호출
 	@Override
-	public List<BoardVO> listAll() {
-		return boardDao.listAll();
+	public List<BoardVO> listAll(String searchOption, String keyword) {
+		return boardDao.listAll(searchOption, keyword);
 	}
 	// 06. 게시글 조회수 증가
 	@Override
@@ -78,6 +78,11 @@ public class BoardServiceImpl implements BoardService {
             session.setAttribute("update_time_"+bno, current_time);
             
         }
+	}
+	// 07. 게시글 레코드 갯수 boardDao.countArticle메서드 
+	@Override
+	public int countArticle(String searchOption, String keyword) {
+		return boardDao.countArticle(searchOption, keyword);
 	}
 
 }
