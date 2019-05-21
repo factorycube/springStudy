@@ -66,7 +66,7 @@ public class BoardServiceImpl implements BoardService {
         // 최초로 조회할 경우 세션에 저장된 값이 없기 때문에 if문은 실행X
         if(session.getAttribute("update_time_"+bno) != null){
                                 // 세션에서 읽어오기
-            update_time = (long)session.getAttribute("update_time_"+bno);
+            update_time = (long) session.getAttribute("update_time_"+bno);
         }
         // 시스템의 현재시간을 current_time에 저장
         long current_time = System.currentTimeMillis();

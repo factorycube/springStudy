@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>회원정보 상세 페이지</title>
-<%@ include file="../include/member_header.jsp" %>
+<%@ include file="../include/header.jsp" %>
 <script>
     $(document).ready(function(){
         $("#btnUpdate").click(function(){
@@ -27,7 +27,7 @@
 </script>
 </head>
 <body>
-<%@ include file="../include/member_menu.jsp" %>
+<%@ include file="../include/menu.jsp" %>
     <h2>회원정보 상세</h2>
     <form name="form1" method="post">
         <table border="1" width="400px">
