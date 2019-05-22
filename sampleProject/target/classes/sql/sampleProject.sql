@@ -1,3 +1,4 @@
+--멤버 테이블 생성
 drop table tbl_member;
 create table tbl_member(
     user_id varchar2(50) primary key,
@@ -40,7 +41,26 @@ viewcnt number default 0,         -- 조회수
 primary key(bno)                  -- 기본키 설정
 );
 
-
+--댓글 테이블 생성
+-- 댓글 테이블
+drop table tbl_reply;
+create table tbl_reply (
+    rno number not null primary key, -- 댓글 번호
+    bno number default 0, -- board 테이블의 번호
+    replytext varchar2(1000) not null,
+    replyer varchar2(50) not null,
+    regdate date default sysdate,
+    updatedate date default sysdate
+);
+-- bno 필드에 foreign key 설정
+-- add constraint 제약조건이름
+-- foreign key(필드명) references 테이블(필드)
+alter table tbl_reply add constraint fk_board
+foreign key(bno) references tbl_board(bno);
+-- 시퀀스 생성(1부터 시작, 1씩 증가)
+create sequence reply_seq
+start with 1
+increment by 1;
 
 
 commit;
