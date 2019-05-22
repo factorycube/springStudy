@@ -16,7 +16,7 @@ public interface BoardService {
     // 04. 게시글 삭제
     public void delete(int bno);
     // 05. 게시글 전체 목록 ==> 검색옵션, 키워드 매개변수 추가
-    public List<BoardVO> listAll(String searchOption, String keyword);
+    public List<BoardVO> listAll(int start, int end, String searchOption, String keyword);
     // 06. 게시글 조회
     public void increaseViewcnt(int bno, HttpSession session);
     // 07. 게시글 레코드 갯수 메서드 추가
