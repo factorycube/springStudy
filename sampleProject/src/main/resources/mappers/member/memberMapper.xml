@@ -25,15 +25,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
     
     <!-- 03. 회원정보 상세조회 -->
-    <select id="viewMember" resultType="memberVO">
-        SELECT 
-          user_id AS userId, 
-          user_name AS userName,
-          user_email AS userEmail,
-          user_regdate AS userRegdate,
-          user_updatedate AS userUpdatedate
-        FROM tbl_member
-        WHERE user_id = #{userId}
+    <select id="memberInfo" resultType="memberVO">
+        select
+    		user_name "userName", user_id "userId",
+    		user_email "userEmail",
+    		user_regdate "userRegdate", user_updatedate "userUpdatedate"
+		from tbl_member
+		where user_id = #{userId}
     </select>
     
     <!-- 04. 회원정보 수정처리 -->
@@ -59,6 +57,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT 
             COUNT(*) 
         FROM tbl_member
+        WHERE user_id = #{userId} AND user_pw = #{userPw}
+    </select>
+    
+    <!-- 회원 정보 보기 -->
+	<select id="viewMember" resultType="memberVO">
+		select
+			user_name AS userName,
+			user_id AS userId,
+			user_email AS userEmail,
+			user_regdate AS userRegdate
+		from tbl_member
+		where user_id=#{userId} and user_pw=#{userPw}
+	</select>
+    
+    <!-- 로그인 체크 -->
+    <select id="loginCheck" resultType="String">
+        SELECT user_name AS userName FROM tbl_member
         WHERE user_id = #{userId} AND user_pw = #{userPw}
     </select>
     

@@ -3,6 +3,7 @@ package com.example.sampleproject.controller.member;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,11 +12,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.example.sampleproject.model.member.dto.MemberVO;
 import com.example.sampleproject.service.member.MemberService;
 
 @Controller // 현재의 클래스를 controller bean에 등록시킴
+@RequestMapping("/member/*") // 모든맵핑은 /member/를 상속
 public class MemberController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
@@ -61,7 +64,7 @@ public class MemberController {
     @RequestMapping("member/view.do")
     public String memberView(String userId, Model model){
         // 회원 정보를 model에 저장
-        model.addAttribute("dto", memberService.viewMember(userId));
+        model.addAttribute("dto", memberService.memberInfo(userId));
         //System.out.println("클릭한 아이디 확인 : "+userId);
         logger.info("클릭한 아이디 : "+userId);
         // member_view.jsp로 포워드
@@ -78,7 +81,7 @@ public class MemberController {
             return "redirect:/member/list.do";
         } else { // 비밀번호가 일치하지 않는다면, div에 불일치 문구 출력, viwe.jsp로 포워드
             // 가입일자, 수정일자 저장
-            MemberVO vo2 = memberService.viewMember(vo.getUserId());
+            MemberVO vo2 = memberService.memberInfo(vo.getUserId());
             vo.setUserRegdate(vo2.getUserRegdate());
             vo.setUserUpdatedate(vo2.getUserUpdatedate());
             model.addAttribute("dto", vo);
@@ -99,9 +102,41 @@ public class MemberController {
             return "redirect:/member/list.do";
         } else { // 비밀번호가 일치하지 않는다면, div에 불일치 문구 출력, viwe.jsp로 포워드
             model.addAttribute("message", "비밀번호 불일치");
-            model.addAttribute("dto", memberService.viewMember(userId));
+            model.addAttribute("dto", memberService.memberInfo(userId));
             return "member/member_view";
         }
     }
-
+    
+    // 01. 로그인 화면 
+    @RequestMapping("login.do")
+    public String login(){
+        return "member/login";    // views/member/login.jsp로 포워드
+    }
+    
+    // 02. 로그인 처리
+    @RequestMapping("loginCheck.do")
+    public ModelAndView loginCheck(@ModelAttribute MemberVO vo, HttpSession session){
+        boolean result = memberService.loginCheck(vo, session);
+        ModelAndView mav = new ModelAndView();
+        if (result == true) { // 로그인 성공
+            // main.jsp로 이동
+            mav.setViewName("home");
+            mav.addObject("msg", "success");
+        } else {    // 로그인 실패
+            // login.jsp로 이동
+            mav.setViewName("member/login");
+            mav.addObject("msg", "failure");
+        }
+        return mav;
+    }
+    
+    // 03. 로그아웃 처리
+    @RequestMapping("logout.do")
+    public ModelAndView logout(HttpSession session){
+        memberService.logout(session);
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("member/login");
+        mav.addObject("msg", "logout");
+        return mav;
+    }
 }

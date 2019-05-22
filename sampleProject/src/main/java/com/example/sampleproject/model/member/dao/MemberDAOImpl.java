@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
@@ -37,8 +38,8 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 	// 03. 회원 정보 상세 조회
 	@Override
-	public MemberVO viewMember(String userId) {
-		return sqlSession.selectOne("member.viewMember", userId);
+	public MemberVO memberInfo(String userId) {
+		return sqlSession.selectOne("member.memberInfo", userId);
 	}
 	// 05. 회원 정보 삭제 처리
 	@Override
@@ -61,4 +62,21 @@ public class MemberDAOImpl implements MemberDAO {
         if(count == 1) result= true;
         return result;
     }
+    
+    // 01_01. 회원 로그인체크
+	@Override
+	public boolean loginCheck(MemberVO vo) {
+		String name = sqlSession.selectOne("member.loginCheck", vo);
+        return (name == null) ? false : true;
+	}
+	// 01_02. 회원 로그인 정보
+	@Override
+	public MemberVO viewMember(MemberVO vo) {
+		return sqlSession.selectOne("member.viewMember", vo);
+	}
+	// 02. 회원 로그아웃
+	@Override
+	public void logout(HttpSession session) {
+		// TODO Auto-generated method stub
+	}
 }
