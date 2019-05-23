@@ -61,7 +61,9 @@ foreign key(bno) references tbl_board(bno);
 create sequence reply_seq
 start with 1
 increment by 1;
-alter table tbl_reply add secretReply varchar2(1000);
+alter table tbl_reply add secret_reply varchar2(1) default 'n';
+alter table tbl_reply drop COLUMN secretreply;
+alter table tbl_reply modify (secretreply varchar2(1) default 'n');
 select * from tbl_reply;
 
 commit;
