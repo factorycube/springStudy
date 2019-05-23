@@ -7,27 +7,36 @@
 <%@ include file="../include/header.jsp" %>
 <script>
     $(document).ready(function(){
-    	
-    	//listReply(); // **댓글 목록 불러오기
-        listReply2(); // ** json 리턴방식
         
-        // ** 댓글 쓰기 버튼 클릭 이벤트 (ajax로 처리)
+        listReply("1"); // **댓글 목록 불러오기
+        //listReply2(); // ** json 리턴방식
+        
+        // 댓글 쓰기 버튼 클릭 이벤트 (ajax로 처리)
         $("#btnReply").click(function(){
             var replytext=$("#replytext").val();
             var bno="${dto.bno}"
-            var param="replytext="+replytext+"&bno="+bno;
+            // ** 비밀댓글 체크여부
+            var secretReply = "n";
+            // 태그.is(":속성") 체크여부 true/false
+            if( $("#secretReply").is(":checked") ){
+                secretReply = "y";
+            }
+            //alert(secretReply);
+            // **비밀댓글 파라미터 추가
+            var param="replytext="+replytext+"&bno="+bno+"&secretReply="+secretReply;
             $.ajax({                
                 type: "post",
                 url: "${path}/reply/insert.do",
                 data: param,
                 success: function(){
                     alert("댓글이 등록되었습니다.");
-                    listReply2();
+                    //listReply2();
+                    listReply("1");
                 }
             });
         });
-    	
-     	// 게시글 목록 버튼 클릭 이벤트 : 버튼 클릭시 상세보기화면에 있던 페이지, 검색옵션, 키워드 값을 가지로 목록으로 이동
+        
+        // 게시글 목록 버튼 클릭 이벤트 : 버튼 클릭시 상세보기화면에 있던 페이지, 검색옵션, 키워드 값을 가지로 목록으로 이동
         $("#btnList").click(function(){
             location.href="${path}/board/list.do?curPage=${curPage}&searchOption=${searchOption}&keyword=${keyword}";
         });
@@ -40,7 +49,7 @@
             }
         });
         
-     	// 게시글 수정 버튼 클릭이벤트
+        // 게시글 수정 버튼 클릭이벤트
         $("#btnUpdete").click(function(){
             //var title = document.form1.title.value; ==> name속성으로 처리할 경우
             //var content = document.form1.content.value;
@@ -70,12 +79,12 @@
         });
     });
     
- 	// Controller방식
+    // Controller방식
     // **댓글 목록1
-    function listReply(){
+    function listReply(num){
         $.ajax({
             type: "get",
-            url: "${path}/reply/list.do?bno=${dto.bno}",
+            url: "${path}/reply/list.do?bno=${dto.bno}&curPage="+num,
             success: function(result){
             // responseText가 result에 저장됨.
                 $("#listReply").html(result);
@@ -128,18 +137,18 @@
                 <!-- 날짜 형식 => yyyy 4자리연도, MM 월, dd 일, a 오전/오후, HH 24시간제, hh 12시간제, mm 분, ss 초 -->
     </div>
     <div>
-		조회수 : ${dto.viewcnt}
+        조회수 : ${dto.viewcnt}
     </div>
     <div>
-		제목
+        제목
         <input name="title" id="title" size="80" value="${dto.title}" placeholder="제목을 입력해주세요">
     </div>
     <div>
-		내용
+        내용
         <textarea name="content" id="content" rows="4" cols="80" placeholder="내용을 입력해주세요">${dto.content}</textarea>
     </div>
     <div>
-		이름
+        이름
         <%-- <input name="writer" id="writer" value="${dto.writer}" placeholder="이름을 입력해주세요"> --%>
         ${dto.userName}
     </div>
@@ -151,20 +160,26 @@
         <button type="button" id="btnUpdete">수정</button>
         <button type="button" id="btnDelete">삭제</button>
     </c:if>
-    	<!-- **상세보기 화면에서 게시글 목록화면으로 이동 -->
+        <!-- 상세보기 화면에서 게시글 목록화면으로 이동 -->
         <button type="button" id="btnList">목록</button>
+        <hr>
     </div>
+    
 </form>
-	<div style="width:650px; text-align: center;">
+    <div style="width:650px; text-align: center;">
         <br>
-        <!-- **로그인 한 회원에게만 댓글 작성폼이 보이게 처리 -->
+        <!-- 로그인 한 회원에게만 댓글 작성폼이 보이게 처리 -->
         <c:if test="${sessionScope.userId != null}">    
         <textarea rows="5" cols="80" id="replytext" placeholder="댓글을 작성해주세요"></textarea>
         <br>
+        <!-- **비밀댓글 체크박스 -->
+        <input type="checkbox" id="secretReply">비밀 댓글
         <button type="button" id="btnReply">댓글 작성</button>
         </c:if>
+    <hr>
     </div>
     <!-- **댓글 목록 출력할 위치 -->
     <div id="listReply"></div>
 </body>
 </html>
+

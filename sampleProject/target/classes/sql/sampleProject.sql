@@ -61,6 +61,7 @@ foreign key(bno) references tbl_board(bno);
 create sequence reply_seq
 start with 1
 increment by 1;
-
+alter table tbl_reply add secretReply varchar2(1000);
+select * from tbl_reply;
 
 commit;

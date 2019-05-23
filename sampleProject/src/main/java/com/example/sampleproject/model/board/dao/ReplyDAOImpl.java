@@ -1,6 +1,8 @@
 package com.example.sampleproject.model.board.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -16,10 +18,14 @@ public class ReplyDAOImpl implements ReplyDAO {
 	SqlSession sqlSession;
 	
 	// 댓글 목록
-	@Override
-	public List<ReplyVO> list(Integer bno) {
-		return sqlSession.selectList("reply.listReply", bno);
-	}
+    @Override
+    public List<ReplyVO> list(Integer bno,  int start, int end) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("bno", bno);
+        map.put("start", start);
+        map.put("end", end);
+        return sqlSession.selectList("reply.listReply", map);
+    }
 	// 댓글 작성
 	@Override
 	public void create(ReplyVO vo) {
@@ -37,5 +43,10 @@ public class ReplyDAOImpl implements ReplyDAO {
 		// TODO Auto-generated method stub
 
 	}
+	// 댓글 갯수
+    @Override
+    public int count(int bno) {
+        return sqlSession.selectOne("reply.countReply",bno);
+    }
 
 }
