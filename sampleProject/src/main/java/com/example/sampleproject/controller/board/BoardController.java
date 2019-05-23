@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,14 +19,21 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.sampleproject.model.board.dto.BoardVO;
 import com.example.sampleproject.service.board.BoardPager;
 import com.example.sampleproject.service.board.BoardService;
+import com.example.sampleproject.service.board.ReplyService;
 
 @Controller    // 현재 클래스를 컨트롤러 빈(bean)으로 등록
 @RequestMapping("/board/*")
 public class BoardController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+	
 	// 의존관계 주입 => BoardServiceImpl 생성
     // IoC 의존관계 역전
     @Inject
     BoardService boardService;
+    
+    @Inject // ReplyService 주입(ReplyService의 댓글의 갯수를 구하는 메서드 호출하기 위해)
+    ReplyService replyService;
     
     // 01. 게시글 목록
     @RequestMapping("list.do")
@@ -78,18 +87,19 @@ public class BoardController {
     }
     
     // 03. 게시글 상세내용 조회, 게시글 조회수 증가 처리
-    // @RequestParam : get/post방식으로 전달된 변수 1개
-    // HttpSession 세션객체
     @RequestMapping(value="view.do", method=RequestMethod.GET)
-    public ModelAndView view(@RequestParam int bno, HttpSession session) {
-        // 조회수 증가 처리
+    public ModelAndView view(@RequestParam int bno, @RequestParam int curPage, @RequestParam String searchOption,
+                            @RequestParam String keyword, HttpSession session) throws Exception{
         boardService.increaseViewcnt(bno, session);
-        // 모델(데이터)+뷰(화면)를 함께 전달하는 객체
         ModelAndView mav = new ModelAndView();
-        // 뷰의 이름
         mav.setViewName("board/view");
-        // 뷰에 전달할 데이터
+        // 댓글의 수를 맵에 저장 : 댓글이 존재하는 게시물의 삭제처리 방지하기 위해 
+        mav.addObject("count", replyService.count(bno)); 
         mav.addObject("dto", boardService.read(bno));
+        mav.addObject("curPage", curPage);
+        mav.addObject("searchOption", searchOption);
+        mav.addObject("keyword", keyword);
+        logger.info("mav:", mav);
         return mav;
     }
     

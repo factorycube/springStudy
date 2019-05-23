@@ -37,12 +37,21 @@
         });
         
         // 2. 게시글 삭제
-        $("#btnDelete").click(function(){
-            if(confirm("삭제하시겠습니까?")){
-                document.form1.action = "${path}/board/delete.do";
-                document.form1.submit();
-            }
-        });
+        // 삭제 버튼 클릭 
+		$("#btnDelete").click(function(){
+		    // 댓글이 존재하는 게시물의 삭제처리 방지
+		    var count = "${count}";
+		    // 댓글의 수가 0보다 크면 팝업, 함수 종료
+		    if(count > 0) {
+		        alert("댓글이 있는 게시물은 삭제할 수 없습니다.")
+		        return;
+		    }
+		    // 댓글의 수가 0이면 삭제처리
+		    if(confirm("삭제하시겠습니까?")){
+		        document.form1.action = "${path}/board/delete.do";
+		        document.form1.submit();
+		        }
+		});
         
         // 3. 게시글 목록으로 이동 - 버튼 클릭시 상세보기화면에 있던 페이지, 검색옵션, 키워드 값을 가지로 목록으로 이동
         $("#btnList").click(function(){
