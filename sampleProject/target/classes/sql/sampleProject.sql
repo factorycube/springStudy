@@ -8,6 +8,9 @@ create table tbl_member(
     user_regdate date default sysdate,
     user_updatedate date
 );
+--메시지 송수신을 위한 포인트 칼럼 추가
+alter table tbl_member add user_point number default 0;
+select * from tbl_member;
 
 insert into tbl_member (user_id,user_pw,user_name,user_email)
 values ('test00','1234','홍길동','test@test.com');
@@ -42,7 +45,7 @@ primary key(bno)                  -- 기본키 설정
 );
 
 --게시글 삭제 상태 유무 칼럼 추가
-alter table tbl_board add show char(1) default 'n';
+alter table tbl_board add show char(1) default 'y';
 
 --댓글 테이블 생성
 -- 댓글 테이블
@@ -70,3 +73,25 @@ alter table tbl_reply modify (secret_reply char(1) default 'n');
 select * from tbl_reply;
 
 commit;
+
+
+--메시지 저장 테이블 생성
+create table tbl_message(
+    mid number not null,
+    targetid varchar2(50) not null,
+    sender varchar2(50) not null,
+    message varchar2(4000) not null,
+    opendate date,
+    senddate date default sysdate,
+    primary key(mid)
+);
+--메시지 시퀀스 생성
+create sequence message_seq
+    start with 1
+    increment by 1;
+-- 제약조건(FK설정)
+alter table tbl_message add constraint fk_usersender
+foreign key (sender) references tbl_member(user_id);
+alter table tbl_message add constraint fk_usertarget
+foreign key (targetid) references tbl_member(user_id);
+select * from tbl_message;

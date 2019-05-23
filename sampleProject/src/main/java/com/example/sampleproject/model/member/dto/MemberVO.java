@@ -9,6 +9,7 @@ public class MemberVO {
 	private String userEmail;
 	private Date userRegdate; // java.utll.Date
 	private Date userUpdatedate;
+	private int userPoint;
 	
 	// Getter/Setter
 	public String getUserId() {
@@ -47,12 +48,19 @@ public class MemberVO {
 	public void setUserUpdatedate(Date userUpdatedate) {
 		this.userUpdatedate = userUpdatedate;
 	}
+	public int getUserPoint() {
+		return userPoint;
+	}
+	public void setUserPoint(int userPoint) {
+		this.userPoint = userPoint;
+	}
 	
 	// toString()
 	@Override
 	public String toString() {
 		return "MemberVO [userId=" + userId + ", userPw=" + userPw + ", userName=" + userName + ", userEmail="
-				+ userEmail + ", userRegdate=" + userRegdate + ", userUpdatedate=" + userUpdatedate + "]";
+				+ userEmail + ", userRegdate=" + userRegdate + ", userUpdatedate=" + userUpdatedate + ", userPoint="
+				+ userPoint + "]";
 	}
 	
 }
