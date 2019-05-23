@@ -20,7 +20,7 @@ public class MessageAdvice {
 	
 	@Before(
 		"execution(* "
-		+ " com.example.spring02.service.message"
+		+ " com.example.sampleproject.service.message"
 		+ ".MessageService*.*(..))")
 	public void startLog(JoinPoint jp) {
 		logger.info("핵심 업무 코드의 정보:"+jp.getSignature());
@@ -30,7 +30,7 @@ public class MessageAdvice {
 	
 	@Around(
 		"execution(* "
-		+ " com.example.spring02.service.message"
+		+ " com.example.sampleproject.service.message"
 		+ ".MessageService*.*(..) )")
 	public Object timeLog(ProceedingJoinPoint pjp)
 		throws Throwable{
