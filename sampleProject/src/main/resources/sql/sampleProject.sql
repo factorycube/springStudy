@@ -41,6 +41,9 @@ viewcnt number default 0,         -- 조회수
 primary key(bno)                  -- 기본키 설정
 );
 
+--게시글 삭제 상태 유무 칼럼 추가
+alter table tbl_board add show char(1) default 'y';
+
 --댓글 테이블 생성
 -- 댓글 테이블
 drop table tbl_reply;
