@@ -16,14 +16,20 @@
                 ${row.userName}(<fmt:formatDate value="${row.regdate}" pattern="yyyy-MM-dd HH:mm:ss"/>)
                 <br>
                 ${row.replytext}
-                <hr>    
+                <br>
+                <!-- 본인 댓글만 수정버튼 생성되도록 처리 -->
+                <c:if test="${sessionScope.userId == row.replyer}">
+                    <input type="button" id="btnModify" value="수정" onclick="showReplyModify('${row.rno}')">
+                </c:if>
+                <hr>
             </td>
         </tr>
         </c:forEach>
-        <!-- **페이징 처리 -->
-        <tr>
+        
+        <!-- 페이징 -->
+        <tr style="text-align: center;">
             <td>
-                <!-- 현재 페이지 블럭이 1보다 크면 처음으로 이동 -->
+                <!-- 현재 페이지 블럭이 1보다 크면 처음페이지로 이동 -->
                 <c:if test="${replyPager.curBlock > 1}">
                     <a href="javascript:listReply('1')">[처음]</a>
                 </c:if>
@@ -31,7 +37,7 @@
                 <c:if test="${replyPager.curBlock > 1}">
                     <a href="javascript:listReply('${replyPager.prevPage}')">[이전]</a>
                 </c:if>
-                <!-- 페이지 블럭 처음부터 마지막 블럭까지 1씩 증가하는 페이지 출력 -->
+                <!-- 페이지 블럭 처음부터 마지막 블럭까지 -->
                 <c:forEach var="num" begin="${replyPager.blockBegin}" end="${replyPager.blockEnd}">
                     <c:choose>
                         <c:when test="${num == replyPager.curPage}">
@@ -53,5 +59,8 @@
             </td>
         </tr>
     </table>
+    
+    <!-- 댓글 수정 영역-->
+    <div id="modifyReply"></div>
 </body>
 </html>

@@ -17,36 +17,38 @@ public class ReplyDAOImpl implements ReplyDAO {
 	@Inject
 	SqlSession sqlSession;
 	
-	// 댓글 목록
+    // 1. 댓글 입력
     @Override
-    public List<ReplyVO> list(Integer bno,  int start, int end) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("bno", bno);
-        map.put("start", start);
-        map.put("end", end);
-        return sqlSession.selectList("reply.listReply", map);
+    public void create(ReplyVO vo) {
+        sqlSession.insert("reply.insertReply", vo);
     }
-	// 댓글 작성
+	// 2. 댓글 목록
 	@Override
-	public void create(ReplyVO vo) {
-		sqlSession.insert("reply.insertReply", vo);
+	public List<ReplyVO> list(Integer bno,  int start, int end) {
+	    Map<String, Object> map = new HashMap<String, Object>();
+	    map.put("bno", bno);
+	    map.put("start", start);
+	    map.put("end", end);
+	    return sqlSession.selectList("reply.listReply", map);
 	}
-	// 댓글 수정
+	// 3. 댓글 상세보기
+	@Override
+	public ReplyVO detail(Integer rno) {
+	    return sqlSession.selectOne("reply.detailReply", rno);
+	}
+	// 4. 댓글 수정
 	@Override
 	public void update(ReplyVO vo) {
-		// TODO Auto-generated method stub
-
+	    sqlSession.update("reply.updateReply", vo);
 	}
-	// 댓글 삭제
+	// 5. 댓글 삭제
 	@Override
 	public void delete(Integer rno) {
-		// TODO Auto-generated method stub
-
+	    sqlSession.delete("reply.deleteReply", rno);
 	}
-	// 댓글 갯수
-    @Override
-    public int count(int bno) {
-        return sqlSession.selectOne("reply.countReply",bno);
-    }
-
+	// 6. 댓글 갯수
+	@Override
+	public int count(Integer bno) {
+	    return sqlSession.selectOne("reply.countReply", bno);
+	}
 }
