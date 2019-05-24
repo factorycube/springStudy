@@ -95,3 +95,15 @@ foreign key (sender) references tbl_member(user_id);
 alter table tbl_message add constraint fk_usertarget
 foreign key (targetid) references tbl_member(user_id);
 select * from tbl_message;
+
+
+UPDATE tbl_member SET user_point = user_point + 20
+        WHERE user_id = 'test00';
+        
+INSERT INTO tbl_message (mid, targetid, sender, message) 
+        VALUES (message_seq.NEXTVAL, 'test00', 'test01', 'dkssud');
+        
+select * from tbl_message;
+delete from tbl_message;
+
+commit;
